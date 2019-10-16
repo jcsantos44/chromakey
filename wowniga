@@ -1,0 +1,56 @@
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+
+#cv2.imshow('asd', th2)
+#cv2.waitKey(0)
+#cv2.imshow('asd', cv2.erode(th, np.ones((7,7), np.uint8)))
+#cv2.waitKey(0)
+
+bg = cv2.imread('sesto.jpg')
+
+for i in range(0, 8):
+    imgName = str(i) + '.bmp'
+    img = cv2.imread(imgName).astype(np.float32)/255
+    img2 = cv2.imread(imgName, 0).astype (np.float32)/255
+
+    """for m in range(0, len(img) - 1):
+        for n in range(0, len(img[m]) - 1):
+            if(img[m][n][0] - img[m][n][1] - img[m][n][2] < 0):
+                img2[m][n] = 0
+            else: 
+                img2[m][n] = (img[m][n][0] - img[m][n][1] - img[m][n][2])"""
+    b,gs,r = cv2.split(img)
+    img2 = gs - b - r
+    img2[img2 < 0] = 0
+
+   # img2 = cv2.threshold(img2,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+    gaux = gs
+
+    for g in gs:
+        
+
+    img2 = cv2.merge((b, g, r))
+
+    cv2.imshow(imgName, np.asarray(img2))
+    cv2.waitKey()
+
+    """img = cv2.medianBlur(img,5)
+    ret,th1 = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+
+    blur = cv2.GaussianBlur(img,(5,5),0)
+    ret3,th2 = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+    th3 = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+                               cv2.THRESH_BINARY,11,2)
+
+    titles = ['Original Image', 'Global Thresholding (v = 127)',
+              'Otsu`s thresholding', 'Adaptive Gaussian Thresholding']
+    images = [img, th1, th2, th3]
+    for i in range(4):
+        plt.subplot(2,2,i+1),plt.imshow(images[i],'gray')
+        plt.suptitle(imgName)
+        plt.title(titles[i])
+        plt.xticks([]),plt.yticks([])
+    plt.show()"""
